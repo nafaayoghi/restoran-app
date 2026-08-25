@@ -1,21 +1,36 @@
 <?php
 
-// Konfigurasi Environment wajib untuk Serverless Vercel
-$_ENV['APP_STORAGE'] = '/tmp/storage';
-$_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
-$_ENV['LOG_CHANNEL'] = 'stderr';
-$_ENV['CACHE_STORE'] = 'array';
-$_ENV['CACHE_DRIVER'] = 'array';
-$_ENV['SESSION_DRIVER'] = 'cookie';
-$_ENV['DB_CONNECTION'] = 'sqlite';
-$_ENV['DB_DATABASE'] = '/tmp/database.sqlite';
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
-foreach ($_ENV as $key => $value) {
-    putenv("{$key}={$value}");
-    $_SERVER[$key] = $value;
+// Pastikan semua env penting terpasang sebelum framework dimuat
+$envs = [
+    'APP_ENV' => 'production',
+    'APP_DEBUG' => 'true',
+    'LOG_CHANNEL' => 'stderr',
+    'CACHE_STORE' => 'array',
+    'CACHE_DRIVER' => 'array',
+    'SESSION_DRIVER' => 'cookie',
+    'MAINTENANCE_DRIVER' => 'cache',
+    'MAINTENANCE_STORE' => 'array',
+    'DB_CONNECTION' => 'sqlite',
+    'DB_DATABASE' => '/tmp/database.sqlite',
+    'VIEW_COMPILED_PATH' => '/tmp/views',
+    'APP_CONFIG_CACHE' => '/tmp/bootstrap/cache/config.php',
+    'APP_SERVICES_CACHE' => '/tmp/bootstrap/cache/services.php',
+    'APP_PACKAGES_CACHE' => '/tmp/bootstrap/cache/packages.php',
+    'APP_ROUTES_CACHE' => '/tmp/bootstrap/cache/routes.php',
+    'APP_EVENTS_CACHE' => '/tmp/bootstrap/cache/events.php',
+];
+
+foreach ($envs as $key => $val) {
+    putenv("{$key}={$val}");
+    $_ENV[$key] = $val;
+    $_SERVER[$key] = $val;
 }
 
-// Buat struktur direktori sementara di /tmp
+// Buat direktori runtime sementara
 $dirs = [
     '/tmp/storage',
     '/tmp/storage/app',
@@ -26,6 +41,7 @@ $dirs = [
     '/tmp/storage/framework/views',
     '/tmp/storage/logs',
     '/tmp/views',
+    '/tmp/bootstrap/cache',
 ];
 
 foreach ($dirs as $dir) {
@@ -37,9 +53,5 @@ foreach ($dirs as $dir) {
 if (!file_exists('/tmp/database.sqlite')) {
     @touch('/tmp/database.sqlite');
 }
-
-// Disable default maintenance mode driver check agar tidak memicu Manager::createDriver()
-$_ENV['MAINTENANCE_DRIVER'] = 'file';
-putenv('MAINTENANCE_DRIVER=file');
 
 require __DIR__ . '/../public/index.php';
