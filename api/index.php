@@ -1,11 +1,9 @@
 <?php
 
-// Paksa Laravel menggunakan direktori /tmp untuk storage & views di Vercel
-putenv('APP_STORAGE=/tmp/storage');
-putenv('LOG_CHANNEL=stderr');
-putenv('VIEW_COMPILED_PATH=/tmp/views');
+$_ENV['LOG_CHANNEL'] = 'stderr';
+$_ENV['APP_STORAGE'] = '/tmp/storage';
+$_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
 
-// Buat struktur folder wajib di /tmp jika belum ada
 $dirs = [
     '/tmp/storage',
     '/tmp/storage/app',
