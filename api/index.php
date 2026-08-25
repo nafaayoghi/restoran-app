@@ -1,19 +1,27 @@
 <?php
 
-// Arahkan storage dan view cache ke /tmp
-putenv('APP_STORAGE=/tmp/storage');
-putenv('VIEW_COMPILED_PATH=/tmp/views');
-putenv('LOG_CHANNEL=stderr');
-putenv('CACHE_STORE=array');
-putenv('SESSION_DRIVER=cookie');
-putenv('DB_CONNECTION=sqlite');
-putenv('DB_DATABASE=/tmp/database.sqlite');
+// Konfigurasi Environment wajib untuk Serverless Vercel
+$_ENV['APP_STORAGE'] = '/tmp/storage';
+$_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
+$_ENV['LOG_CHANNEL'] = 'stderr';
+$_ENV['CACHE_STORE'] = 'array';
+$_ENV['CACHE_DRIVER'] = 'array';
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_ENV['DB_DATABASE'] = '/tmp/database.sqlite';
 
-// Buat folder sementara dan file database SQLite di /tmp
+foreach ($_ENV as $key => $value) {
+    putenv("{$key}={$value}");
+    $_SERVER[$key] = $value;
+}
+
+// Buat struktur direktori sementara di /tmp
 $dirs = [
     '/tmp/storage',
+    '/tmp/storage/app',
     '/tmp/storage/framework',
     '/tmp/storage/framework/cache',
+    '/tmp/storage/framework/cache/data',
     '/tmp/storage/framework/sessions',
     '/tmp/storage/framework/views',
     '/tmp/storage/logs',
@@ -29,5 +37,9 @@ foreach ($dirs as $dir) {
 if (!file_exists('/tmp/database.sqlite')) {
     @touch('/tmp/database.sqlite');
 }
+
+// Disable default maintenance mode driver check agar tidak memicu Manager::createDriver()
+$_ENV['MAINTENANCE_DRIVER'] = 'file';
+putenv('MAINTENANCE_DRIVER=file');
 
 require __DIR__ . '/../public/index.php';
