@@ -1,59 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Resto Sedap - Restaurant Reservation & Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-stack Restaurant Management and Reservation System built with Laravel 12, Bootstrap 5, and Microsoft SQL Server (MSSQL). Designed to streamline table bookings, multi-item menu pre-ordering, customer tracking, automated blacklist monitoring, and operational reporting.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Application Preview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Dashboard Utama
+Ringkasan statistik operasional: total reservasi, pelanggan terdaftar, jumlah blacklist, total pendapatan, daftar pelanggan teraktif, dan jadwal reservasi harian.
+![Dashboard](screenshot/01-dashboard.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+### 2. Manajemen Reservasi & Transaksi
+Pencatatan reservasi real-time, filter status (Semua, Waktu Terdekat, Dibatalkan, Blacklist), serta fitur ekspor laporan ke format Excel, PDF, dan Print.
+![Daftar Reservasi](screenshot/02-daftar-reservasi.png)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* **Tambah Reservasi & Multi-Menu Pre-Order:**
+  ![Tambah Reservasi](screenshot/03-tambah-reservasi.png)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **Edit & Update Status Reservasi:**
+  ![Edit Reservasi](screenshot/04-edit-reservasi.png)
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Master Data Pelanggan & Deteksi Blacklist
+Pelacakan riwayat reservasi pelanggan dan deteksi otomatis status Normal vs Blacklist untuk memitigasi risiko pembatalan sepihak (no-show).
+![Daftar Pelanggan](screenshot/05-daftar-pelanggan.png)
+![Tambah Pelanggan](screenshot/06-tambah-pelanggan.png)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 4. Master Data Menu & Manajemen Meja
+Pengelolaan katalog makanan/minuman berdasarkan kategori harga, serta pengaturan kapasitas dan ketersediaan meja restoran.
+![Daftar Menu](screenshot/07-daftar-menu.png)
+![Tambah Menu](screenshot/08-tambah-menu.png)
+![Daftar Meja](screenshot/09-daftar-meja.png)
+![Tambah Meja](screenshot/10-tambah-meja.png)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 5. Ekspor & Cetak Laporan Operasional
+Fitur pratinjau cetak (print preview) laporan transaksi dan reservasi yang siap dikirim langsung ke printer fisik atau diunduh sebagai file PDF.
+![Cetak Laporan](screenshot/11-cetak-laporan.png)
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Pemodelan Basis Data (Database Architecture)
 
-## Security Vulnerabilities
+Sistem ini dirancang menggunakan dua tahap pemodelan relasional di PowerDesigner dan diimplementasikan pada Microsoft SQL Server.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1. Conceptual Data Model (CDM)
+CDM menggambarkan struktur konsep data, relasi logis, serta kardinalitas antarentitas dalam sistem operasional restoran tanpa terikat oleh struktur DBMS tertentu.
 
-## License
+![Conceptual Data Model](screenshots/cdm.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Entitas dan Aturan Relasi (Kardinalitas):**
+* **`pelanggan` — `reservasi` (membuat):** Relasi One-to-Many (1:N). Satu pelanggan dapat membuat banyak riwayat transaksi reservasi.
+* **`meja` — `reservasi` (dipesan dalam):** Relasi One-to-Many (1:N). Satu meja fisik dapat digunakan pada banyak sesi reservasi di waktu berbeda.
+* **`reservasi` — `detail_pesanan` (memiliki):** Relasi One-to-Many (1:N). Satu transaksi reservasi dapat menampung pemesanan beberapa jenis menu (pre-order).
+* **`menu` — `detail_pesanan` (berisi):** Relasi One-to-Many (1:N). Satu item menu dapat terdaftar di berbagai transaksi reservasi yang berbeda.
+
+---
+
+### 2. Physical Data Model (PDM)
+PDM merupakan implementasi fisik tabel relasional pada SQL Server dengan penentuan tipe data, Primary Key (`<pk>`), dan Foreign Key (`<fk>`).
+
+![Physical Data Model](screenshots/pdm.png)
+
+**Struktur Relasi & Kunci (Keys):**
+* **Tabel `reservasi`:**
+  * `id_reservasi` sebagai Primary Key (`<pk>`).
+  * `id_pelanggan` sebagai Foreign Key (`<fk1>`) mereferensikan tabel `pelanggan`.
+  * `nomor_meja` sebagai Foreign Key (`<fk2>`) mereferensikan tabel `meja`.
+* **Tabel `detail_pesanan` (Junction Table):**
+  * Bertindak sebagai tabel detail/penghubung untuk mencatat rincian transaksi pemesanan item makanan/minuman (`jumlah`, `harga_satuan`, `subtotal`).
+  * Terhubung via Foreign Key ke `reservasi` dan `menu`.
+
+---
+
+## Fitur Utama
+
+- **Real-Time Analytics Dashboard:** Visualisasi metrik pendapatan, volume reservasi, dan daftar pelanggan teraktif.
+- **Smart Booking & Pre-Order System:** Reservasi meja dengan integrasi pemesanan banyak menu makanan/minuman sekaligus.
+- **Customer Reputation Tracking:** Identifikasi dan manajemen status pelanggan (Normal vs Blacklist) untuk mencegah no-show.
+- **Export & Reporting Module:** Ekspor data operasional instan ke format Excel (.xlsx), PDF, dan Print Ready View.
+- **Data Integrity & Relational Design:** Integritas referensial berbasis SQL Server dengan skema normalisasi yang konsisten.
+
+---
+
+## Tech Stack
+
+- **Backend Framework:** Laravel 12 (PHP 8.2+)
+- **Database Engine:** Microsoft SQL Server (MSSQL) / ODBC Driver 17
+- **Frontend & UI:** Blade Templating Engine, Bootstrap 5, FontAwesome
+- **Data Modeling Tool:** SAP PowerDesigner (CDM & PDM)
+- **Libraries:** DataTables, Carbon (Date/Time Processing)
+
+---
+
+## Panduan Instalasi Lokal
+
+1. **Clone Repositori:**
+   - Jalankan: `git clone https://github.com/nafaayoghi/restoran-app.git`
+   - Masuk ke folder: `cd restoran-app`
+
+2. **Install Dependensi PHP:**
+   - Jalankan: `composer install`
+
+3. **Konfigurasi Environment Database:**
+   - Salin file `.env.example` menjadi `.env`
+   - Sesuaikan konfigurasi koneksi SQL Server berikut:
+     - `DB_CONNECTION=sqlsrv`
+     - `DB_HOST=127.0.0.1`
+     - `DB_PORT=1433`
+     - `DB_DATABASE=restoran`
+     - `DB_USERNAME=sa`
+     - `DB_PASSWORD=your_password`
+
+4. **Generate Application Key & Migrasi:**
+   - Jalankan: `php artisan key:generate`
+   - Jalankan: `php artisan migrate --seed`
+
+5. **Jalankan Server Lokal:**
+   - Jalankan: `php artisan serve`
+   - Buka browser pada alamat: `http://127.0.0.1:8000`
+
+---
+
+## Author
+**Nafa Rahmadianty Ayoghi**  
+Department of Mathematics, Faculty of Science and Data Analytics (FSAD)  
+Institut Teknologi Sepuluh Nopember (ITS)  
+2026 Resto Sedap. All Rights Reserved.
