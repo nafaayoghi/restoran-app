@@ -53,7 +53,7 @@ Sistem ini dirancang menggunakan dua tahap pemodelan relasional di PowerDesigner
 ### 1. Conceptual Data Model (CDM)
 CDM menggambarkan struktur konsep data, relasi logis, serta kardinalitas antarentitas dalam sistem operasional restoran tanpa terikat oleh struktur DBMS tertentu.
 
-![Conceptual Data Model](screenshots/cdm.png)
+![Conceptual Data Model](screenshot/cdm.png)
 
 **Entitas dan Aturan Relasi (Kardinalitas):**
 * **`pelanggan` — `reservasi` (membuat):** Relasi One-to-Many (1:N). Satu pelanggan dapat membuat banyak riwayat transaksi reservasi.
@@ -66,7 +66,7 @@ CDM menggambarkan struktur konsep data, relasi logis, serta kardinalitas antaren
 ### 2. Physical Data Model (PDM)
 PDM merupakan implementasi fisik tabel relasional pada SQL Server dengan penentuan tipe data, Primary Key (`<pk>`), dan Foreign Key (`<fk>`).
 
-![Physical Data Model](screenshots/pdm.png)
+![Physical Data Model](screenshot/pdm.png)
 
 **Struktur Relasi & Kunci (Keys):**
 * **Tabel `reservasi`:**
